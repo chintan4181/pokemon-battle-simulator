@@ -6,11 +6,7 @@ const typeEffectiveness: { [key: string]: { superEffective: string[], notEffecti
   Grass: { superEffective: ['Water'], notEffective: ['Fire'] }};
 
   
-  // Function to calculate total base stats (HP + Attack + Defense)
-const calculateTotalStats = (pokemon: Pokemon): number => { 
-    return pokemon.base.HP + pokemon.base.Attack + pokemon.base.Defense;
-};
-
+  
 const getTypeMultiplier = (attackerTypes: string[], defenderTypes: string[]): number => {
     let multiplier = 1;
 
@@ -31,9 +27,7 @@ const getTypeMultiplier = (attackerTypes: string[], defenderTypes: string[]): nu
 
 //main battle logic function
 export const simulateBattle = (pokemon1: Pokemon, pokemon2: Pokemon) => {
-//calculate base stats
-    //const totalStats1 = calculateTotalStats(pokemon1);
-    //const totalStats2 = calculateTotalStats(pokemon2);
+
     let winner: Pokemon;
   let explanation: string;
     
