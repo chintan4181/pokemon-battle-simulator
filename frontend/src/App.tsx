@@ -7,6 +7,7 @@ import './App.css';
 
 interface BattleResponse {
   winner: string;
+    summary: string;
   pokemon1: { name: string; stats: any; types: string[] };
   pokemon2: { name: string; stats: any; types: string[] };
 }
@@ -36,18 +37,18 @@ function App(){
     fetchPokemonNames();
   }, []);
 
-     const handleBattle = async() => {
+const handleBattle = async() => {
         if (!selectedPokemon1 || !selectedPokemon2) {
             setError('Please select both Pokémon for the battle.');
             return;
         }
 
-        axios.post('/api/battle', {
+        axios.post(`${API_BASE_URL}/api/battle`, {
             pokemon1Name: selectedPokemon1,
             pokemon2Name: selectedPokemon2
         })
         .then(response => {
-            setBattleResult(response.data.result);
+            setBattleResult(response.data);
             setError(null);
         })
         .catch(err => {
@@ -59,7 +60,7 @@ function App(){
     
     return (
         <div className="App">
-        <h1>Pokémon Battle Simulator</h1>
+        <h1>Pokemon Battle Simulator</h1>
         <PokemonSelector 
             pokemonNames={pokemonNames}
             selectedPokemon1={selectedPokemon1}
@@ -67,6 +68,23 @@ function App(){
             onSelectPokemon1={setSelectedPokemon1}
             onSelectPokemon2={setSelectedPokemon2}
         />  
+        <p></p>
+        <button
+            onClick={handleBattle}
+            disabled={!selectedPokemon1 || !selectedPokemon2 || loading}
+            style={{
+              padding: '12px 25px',
+              fontSize: '1.1em',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              transition: 'background-color 0.3s ease',
+            }}
+          >
+            {loading ? 'Battling...' : 'Start Battle!'}
+          </button>
         <BattleResult result={battleResult} error={error} />
         </div>
     );

@@ -17,15 +17,15 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({
 }) => {
   return (
     <div>
-      <h2>Select Pokémon for Battle</h2>
+      <h2>Select Pokemon for Battle</h2>
       <div>
-        <label htmlFor="pokemon1">Pokémon 1:</label>
+        <label htmlFor="pokemon1">Pokemon 1:</label>
         <select
           id="pokemon1"
           value={selectedPokemon1 || ''}
           onChange={(e) => onSelectPokemon1(e.target.value)}
         >
-          <option value="">Select Pokémon</option>
+          <option value="">Select Pokemon</option>
           {pokemonNames.map((name) => (
             <option key={name} value={name}>
               {name}
@@ -33,14 +33,16 @@ const PokemonSelection: React.FC<PokemonSelectionProps> = ({
           ))}
         </select>
       </div>
+      
+      <p></p>
       <div>
-        <label htmlFor="pokemon2">Pokémon 2:</label>
+        <label htmlFor="pokemon2">Pokemon 2:</label>
         <select
           id="pokemon2"
           value={selectedPokemon2 || ''}
           onChange={(e) => onSelectPokemon2(e.target.value)}
         >
-          <option value="">Select Pokémon</option>
+          <option value="">Select Pokemon</option>
           {pokemonNames.map((name) => (
             <option key={name} value={name}>
               {name}

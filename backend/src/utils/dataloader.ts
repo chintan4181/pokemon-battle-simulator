@@ -2,25 +2,38 @@ import { Pokemon } from "../interfaces/pokemon.interface";
 import * as fs from "fs";
 import * as path from "path";
 
-let pokemonData: Pokemon[] = [];
+let pokemonData: Pokemon[] | null = null;
 
-export const loadPokemonData = () => {
-  const filePath = path.join(__dirname, "../data/pokemon.json");
-  if (fs.existsSync(filePath)) {
-    const data = fs.readFileSync(filePath, "utf-8");
-    pokemonData = JSON.parse(data);
-    console.log(`Loaded ${pokemonData?.length} Pokemon.`);
-  } else {
-    console.error("Pokemon data file not found.");
+export const loadPokemonData = (): Pokemon[] => {
+  if (pokemonData) {
+    return pokemonData;
+  }
+
+  try {
+    const dataPath = path.join(__dirname, '..', 'data', 'pokedex.json');
+    const rawData = fs.readFileSync(dataPath, 'utf-8');
+    const parsedData = JSON.parse(rawData);
+
+    // Important: Extract the actual array from the parsed object
+    pokemonData = parsedData.pokemon as Pokemon[];
+
+    console.log("Type of pokemonData:", Array.isArray(pokemonData));
+    console.log(`Loaded ${pokemonData?.length} Pokémon.`);
+    return pokemonData || [];
+  } catch (error) {
+    console.error('Error loading Pokemon data:', error);
+    return [];
   }
 };
 
 export const getPokemonByName = (name: string): Pokemon | undefined => {
-    const data = loadPokemonData();
-    return pokemonData.find(pokemon => pokemon.name.toLowerCase() === name.toLowerCase());
+  const data = loadPokemonData();
+  return data.find(p => p.name.toLowerCase() === name.toLowerCase());
 };
 
 export const getAllPokemon = (): string[] => {
-    const data = loadPokemonData();
-    return pokemonData.map(pokemon => pokemon.name);
+  const data = loadPokemonData();
+  const names = data.map(p => p.name);
+  console.log("Pokémon names:", names);
+  return names;
 };

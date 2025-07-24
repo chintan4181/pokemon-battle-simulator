@@ -15,6 +15,7 @@ app.use((req, res, next) => {
 app.get('/api/pokemon', (req, res) => {
   try {
     const pokemonNames = getAllPokemon();
+    console.log(pokemonNames)
     res.json(pokemonNames);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch Pokemon names.' });
@@ -36,7 +37,21 @@ app.post('/api/battle', (req, res) => {
     return res.status(404).json({ error: 'One or both Pokémon not found.' });
   }
 
-  const result = simulateBattle(pokemon1, pokemon2);
-  res.json({ result });
+ const { winner, explanation } = simulateBattle(pokemon1, pokemon2);
+ res.json({
+    winner: winner,
+    summary: explanation,
+    pokemon1: {
+      name: pokemon1.name,
+      stats: pokemon1.base,
+      types: pokemon1.type
+    },
+    pokemon2: {
+      name: pokemon2.name,
+      stats: pokemon2.base,
+      types: pokemon2.type
+    }
+  });
 });
+
 export default app;
